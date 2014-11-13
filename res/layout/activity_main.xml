@@ -1,0 +1,174 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="com.ojk.MainActivity" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTerluar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true" >
+
+        <RelativeLayout
+            android:id="@+id/relayoutlogo"
+            android:layout_width="160dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="80dp"
+            android:scaleType="fitCenter" >
+
+            <ImageView
+                android:id="@+id/logoDepan"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/logo" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutShadow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relayoutlogo"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/linearLayoutHomeListMenu"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#c70100"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/linearLayoutInside1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/ImageViewIcon"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_regulasi" />
+
+                    <TextView
+                        android:id="@+id/TextViewMenu"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10sp"
+                        android:layout_toRightOf="@id/ImageViewIcon"
+                        android:text="Regulasi"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TextViewCount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="15sp"
+                        android:background="#d74f4f"
+                        android:gravity="right"
+                        android:text=" 223 "
+                        android:textColor="#ffffff"
+                        android:textColorHighlight="#d74f4f"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/linearLayoutInside2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/ImageViewIcon2"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_ojkterbaru" />
+
+                    <TextView
+                        android:id="@+id/TextViewMenu2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10sp"
+                        android:layout_toRightOf="@id/ImageViewIcon2"
+                        android:text="OJK Terbaru"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/TextViewCount2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="15sp"
+                        android:background="#d74f4f"
+                        android:gravity="right"
+                        android:text="  19  "
+                        android:textColor="#ffffff"
+                        android:textColorHighlight="#d74f4f"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/linearLayoutInside3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:id="@+id/ImageViewIcon3"
+                        android:layout_width="30sp"
+                        android:layout_height="30sp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="5dp"
+                        android:src="@drawable/ic_tentangojk" />
+
+                    <TextView
+                        android:id="@+id/TextViewMenu3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_margin="10sp"
+                        android:layout_toRightOf="@id/ImageViewIcon3"
+                        android:text="Tentang OJK"
+                        android:textColor="#ffffff"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayoutShadow"
+            android:layout_centerHorizontal="true"
+            android:text="OJK App Ver 0.1"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF" />
+    </RelativeLayout>
+
+</RelativeLayout>
