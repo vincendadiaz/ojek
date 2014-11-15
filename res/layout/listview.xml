@@ -3,6 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
     
+    <RelativeLayout
+        android:id="@+id/relativeLayoutListKosong"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" >
+
+        <TextView
+            android:id="@+id/TextViewListKosong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:text="Tidak ada data" />
+    </RelativeLayout>
+    
     <ListView android:id="@+id/listViewReg" 
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"></ListView>

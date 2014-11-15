@@ -70,6 +70,15 @@ public class OJKTerbaru extends Activity {
 			ObjectItemData[i] = arrayListObj.get(i);
 		}
 		
+		if (ObjectItemData.length == 0) {
+			TextView textViewListKosong = (TextView) findViewById(R.id.TextViewListKosong);
+			if (kodeBahasa.equals("id")) {
+				textViewListKosong.setText("Tidak ada OJK Terbaru");
+			} else {
+				textViewListKosong.setText("There is no latest OJK");
+			}
+		}
+		
 //		ObjectItemData = Global.ObjectOJKTerbaru;
 //
 //		/**

@@ -96,6 +96,20 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		return ListOfObj;
 	}
 	
+	public void updateCreatedOJKTerbaruUsingDlEn(String downloadUrl, String newCreated) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("created", newCreated);
+		sqLiteDatabase.update("OjkTerbaruEn", values, "downloadurl='" + downloadUrl + "'", null);
+	}
+	
+	public void updateCreatedOJKTerbaruUsingDl(String downloadUrl, String newCreated) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("created", newCreated);
+		sqLiteDatabase.update("OjkTerbaru", values, "downloadurl='" + downloadUrl + "'", null);
+	}
+	
 	public void updateCreatedOJKTerbaruEn(String url, String newCreated) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();

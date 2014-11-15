@@ -96,6 +96,11 @@ public class BackgroundService extends IntentService {
 			} else {
 				if (OpenJSON(urlMenu)) {
 					MasukinDB();
+					if (kodeBahasa.equals("id")) {
+						CekDB();
+					} else {
+						CekDBEn();
+					}
 				}
 			}
 			
@@ -214,7 +219,7 @@ public class BackgroundService extends IntentService {
 //						Log.d("disini", "b");
 						// cek created, kalo ga sama update
 						if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBNonReg.get(j).created)) {
-							Log.d("disini", "c");
+//							Log.d("disini", "c");
 							databaseMenuRegulasi.updateCreatedOJKTerbaru(dataDariDBNonReg.get(j).url, Global.ObjectOJKTerbaru[i].created);
 							counterNew++;
 							lastType = Global.ObjectOJKTerbaru[i].itemType;
@@ -247,23 +252,24 @@ public class BackgroundService extends IntentService {
 		ArrayList<ObjectItemGridView> grid = databaseMenuRegulasi.fetchObjectAllGrid();
 
 			for (int i = 0; i < Global.ObjectOJKTerbaru.length; i++) {
-				Log.d("disini", "a");
+//				Log.d("disini", "a");
 				if (Global.ObjectOJKTerbaru[i].itemType.equals("regulasi")) {
-					Log.d("disini", "b");
+//					Log.d("disini", "b");
 					for (int j = 0; j < dataDariDBReg.size(); j++) {
 						
 						//cek kesamaan downloadurlnya, sebagai indikator unik
 						if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(dataDariDBReg.get(j).downloadUrl)) {
-							Log.d("disini", "c");
+//							Log.d("disini", "c");
 							// cek created, kalo ga sama update di DB OJK dan DB GridRegulasi
-							if (Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
-								Log.d("disini", "d");
+							if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
+//								Log.d("disini", "d");
+								databaseMenuRegulasi.updateCreatedOJKTerbaruUsingDl(Global.ObjectOJKTerbaru[i].downloadUrl, Global.ObjectOJKTerbaru[i].created);
 								// cek created dengan di DB pada GridRegulasi
 								for (int k = 0; k < grid.size(); k++) {
 									if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
-										Log.d("disini", "e");
+//										Log.d("disini", "e");
 										if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
-											Log.d("disini", "f");
+//											Log.d("disini", "f");
 											databaseMenuRegulasi.updateCreatedGrid(Global.ObjectOJKTerbaru[i].downloadUrl, Global.ObjectOJKTerbaru[i].created);
 											counterNew++;
 											lastType = Global.ObjectOJKTerbaru[i].itemType;
@@ -274,7 +280,7 @@ public class BackgroundService extends IntentService {
 							break;
 						}
 						
-						//kalo udah sampe ujung dan masih beda, berarti ga ada, masukin baru ke DB OJKTerbaru trus bikin notif
+						//kalo udah sampe ujung dan masih beda, berarti ga ada, masukin baru ke DB OJKTerbaru dan DB Grid, trus bikin notif
 						if (!Global.ObjectOJKTerbaru[i].downloadUrl.equals(dataDariDBReg.get(j).downloadUrl) && j == dataDariDBReg.size()-1) {
 							int id = databaseMenuRegulasi.fetchDataOJKTerbaru().size();
 							String itemType = Global.ObjectOJKTerbaru[i].itemType.toString();
@@ -290,6 +296,7 @@ public class BackgroundService extends IntentService {
 							
 							//cek db di GridRegulasi
 							for (int k = 0; k < grid.size(); k++) {
+								// kalo ada update untuk Grid, tapi ternyata di OJK terbaru belum ada
 								if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
 									if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
 										databaseMenuRegulasi.updateCreatedGrid(Global.ObjectOJKTerbaru[i].downloadUrl, Global.ObjectOJKTerbaru[i].created);
@@ -301,7 +308,7 @@ public class BackgroundService extends IntentService {
 								
 								// kalo ternyata di GridRegulasi pun ga ada, berarti baru banget, tambahin ke dalam Grid
 								if (!Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl) && k == grid.size()-1) {
-									int newid = grid.size();
+									int newid = databaseMenuRegulasi.fetchObjectAllGrid().size();
 									String newtitle = Global.ObjectOJKTerbaru[i].itemName;
 									String newdownloadurl = Global.ObjectOJKTerbaru[i].downloadUrl;
 									String newfilesize = Global.ObjectOJKTerbaru[i].fileSize;
@@ -311,7 +318,7 @@ public class BackgroundService extends IntentService {
 									String newcreated = Global.ObjectOJKTerbaru[i].created;
 									String newdownloaded = "no";
 									
-									databaseMenuRegulasi.insertDataGrid(newid, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded);		
+									databaseMenuRegulasi.insertDataGrid(newid+1, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded);		
 									counterNew++;
 									lastType = Global.ObjectOJKTerbaru[i].itemType;
 								}
@@ -434,8 +441,9 @@ public class BackgroundService extends IntentService {
 						//cek kesamaan downloadurlnya, sebagai indikator unik
 						if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(dataDariDBReg.get(j).downloadUrl)) {
 							// cek created, kalo ga sama update di DB OJK dan DB GridRegulasi
-							if (Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
+							if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
 								// cek created dengan di DB pada GridRegulasi
+								databaseMenuRegulasi.updateCreatedOJKTerbaruUsingDlEn(Global.ObjectOJKTerbaru[i].downloadUrl, Global.ObjectOJKTerbaru[i].created);
 								for (int k = 0; k < grid.size(); k++) {
 									if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
 										if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
@@ -476,7 +484,7 @@ public class BackgroundService extends IntentService {
 								
 								// kalo ternyata di GridRegulasi pun ga ada, berarti baru banget, tambahin ke dalam Grid
 								if (!Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl) && k == grid.size()-1) {
-									int newid = grid.size();
+									int newid = databaseMenuRegulasi.fetchObjectAllGridEn().size();
 									String newtitle = Global.ObjectOJKTerbaru[i].itemName;
 									String newdownloadurl = Global.ObjectOJKTerbaru[i].downloadUrl;
 									String newfilesize = Global.ObjectOJKTerbaru[i].fileSize;
@@ -486,7 +494,7 @@ public class BackgroundService extends IntentService {
 									String newcreated = Global.ObjectOJKTerbaru[i].created;
 									String newdownloaded = "no";
 									
-									databaseMenuRegulasi.insertDataGridEn(newid, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded);		
+									databaseMenuRegulasi.insertDataGridEn(newid+1, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded);		
 									counterNew++;
 									lastType = Global.ObjectOJKTerbaru[i].itemType;
 								}
