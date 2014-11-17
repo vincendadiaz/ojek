@@ -340,10 +340,11 @@ public class MainActivity extends Activity {
 				String parentUrl = obj.getString("ParentUrl").toString();
 				String created = obj.getString("Created").toString();
 				String downloaded = "no";
+				String itemUrl = obj.getString("Url").toString();
 
 				databaseMenuRegulasi.insertDataGrid(idGrid, judul, downloadUrl,
 						fileSize, fileType, parentUrl, idParent, 0, created,
-						downloaded);
+						downloaded, itemUrl);
 
 			} catch (JSONException e) {
 				Log.d("JSON ERROR GRID di ", e.toString());
@@ -411,10 +412,12 @@ public class MainActivity extends Activity {
 				String parentUrl = obj.getString("ParentUrl").toString();
 				String created = obj.getString("Created").toString();
 				String downloaded = "no";
+				String itemUrl = obj.getString("Url").toString();
+						
 
 				databaseMenuRegulasi.insertDataGridEn(idGrid, judul,
 						downloadUrl, fileSize, fileType, parentUrl, idParent,
-						0, created, downloaded);
+						0, created, downloaded, itemUrl);
 
 			} catch (JSONException e) {
 				Log.d("JSON ERROR GRID di ", e.toString());

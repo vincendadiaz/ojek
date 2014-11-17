@@ -421,20 +421,25 @@ public class Download extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 669669) {
-			int actionBarTitleId = Resources.getSystem().getIdentifier(
-					"action_bar_title", "id", "android");
-			if (actionBarTitleId > 0) {
-				TextView title = (TextView) findViewById(actionBarTitleId);
-				if (title != null) {
-					title.setTextColor(Color.WHITE);
+		
+		try {
+			if (requestCode == 669669) {
+				int actionBarTitleId = Resources.getSystem().getIdentifier(
+						"action_bar_title", "id", "android");
+				if (actionBarTitleId > 0) {
+					TextView title = (TextView) findViewById(actionBarTitleId);
+					if (title != null) {
+						title.setTextColor(Color.WHITE);
+					}
 				}
 			}
-		}
-
-		if (mProgressDialog.isShowing()) {
-			mProgressDialog.dismiss();
-			dismissDialog(DIALOG_DOWNLOAD_PROGRESS);
+	
+			if (mProgressDialog.isShowing()) {
+				mProgressDialog.dismiss();
+				dismissDialog(DIALOG_DOWNLOAD_PROGRESS);
+			}
+		} catch (Exception e){
+			
 		}
 	}
 }

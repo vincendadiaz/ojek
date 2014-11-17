@@ -11,8 +11,9 @@ public class ObjectItemGridView {
     public int itemIsRead;
     public String createdOn;
     public String downloadedOn;
+    public String itemUrl;
     
-    public ObjectItemGridView(int itemId, String itemTitle, String itemDownloadUrl, String itemFileSize, String itemFileType, String itemParentUrl, int itemIdParent, int itemIsRead, String createdOn, String downloadedOn ) {
+    public ObjectItemGridView(int itemId, String itemTitle, String itemDownloadUrl, String itemFileSize, String itemFileType, String itemParentUrl, int itemIdParent, int itemIsRead, String createdOn, String downloadedOn, String itemUrl ) {
         this.itemId = itemId;
         this.itemTitle = itemTitle;
         this.itemDownloadUrl = itemDownloadUrl;
@@ -23,6 +24,7 @@ public class ObjectItemGridView {
         this.itemIsRead = itemIsRead;
         this.createdOn = createdOn;
         this.downloadedOn = downloadedOn;
+        this.itemUrl = itemUrl;
     }
     
     public ObjectItemGridView(String itemTitle, String itemDownloadUrl, String itemFileSize, String itemFileType) {

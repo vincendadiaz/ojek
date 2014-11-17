@@ -23,11 +23,11 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		String table = "CREATE TABLE `MenuRegulasi` (`id`	INTEGER NOT NULL,`title`	TEXT,`url`	TEXT,`idparent`	INTEGER,`islastchild`	INTEGER,`anakcount`	INTEGER);";
 		db.execSQL(table);
-		table = "CREATE TABLE `GridRegulasi` (`id`	INTEGER NOT NULL,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `idparent` INTEGER, `isread` INTEGER, `createdon` TEXT, `downloadedon` TEXT);";
+		table = "CREATE TABLE `GridRegulasi` (`id`	INTEGER NOT NULL,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `idparent` INTEGER, `isread` INTEGER, `createdon` TEXT, `downloadedon` TEXT, `url` TEXT);";
 		db.execSQL(table);
 		table = "CREATE TABLE `MenuRegulasiEn` (`id`	INTEGER NOT NULL,`title`	TEXT,`url`	TEXT,`idparent`	INTEGER,`islastchild`	INTEGER,`anakcount`	INTEGER);";
 		db.execSQL(table);
-		table = "CREATE TABLE `GridRegulasiEn` (`id`	INTEGER NOT NULL,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `idparent` INTEGER, `isread` INTEGER, `createdon` TEXT, `downloadedon` TEXT);";
+		table = "CREATE TABLE `GridRegulasiEn` (`id`	INTEGER NOT NULL,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `idparent` INTEGER, `isread` INTEGER, `createdon` TEXT, `downloadedon` TEXT, `url` TEXT);";
 		db.execSQL(table);
 		table = "CREATE TABLE `OjkTerbaru` (`id`	INTEGER NOT NULL,`itemtype` TEXT ,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `url` TEXT, `created` TEXT);";
 		db.execSQL(table);
@@ -96,18 +96,18 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		return ListOfObj;
 	}
 	
-	public void updateCreatedOJKTerbaruUsingDlEn(String downloadUrl, String newCreated) {
+	public void updateCreatedOJKTerbaruUsingUrlEn(String downloadUrl, String newCreated) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("created", newCreated);
-		sqLiteDatabase.update("OjkTerbaruEn", values, "downloadurl='" + downloadUrl + "'", null);
+		sqLiteDatabase.update("OjkTerbaruEn", values, "url='" + downloadUrl + "'", null);
 	}
 	
-	public void updateCreatedOJKTerbaruUsingDl(String downloadUrl, String newCreated) {
+	public void updateCreatedOJKTerbaruUsingUrl(String downloadUrl, String newCreated) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("created", newCreated);
-		sqLiteDatabase.update("OjkTerbaru", values, "downloadurl='" + downloadUrl + "'", null);
+		sqLiteDatabase.update("OjkTerbaru", values, "url='" + downloadUrl + "'", null);
 	}
 	
 	public void updateCreatedOJKTerbaruEn(String url, String newCreated) {
@@ -217,16 +217,16 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 	
 	//stop Query buat search
 	
-	public int getIdParentFromParentUrlEn(String parentUrl) {
-		String queryCount = "select idparent from GridRegulasiEn where parenturl = '" + parentUrl + "'";
+	public int getIdParentFromUrlEn(String url) {
+		String queryCount = "select idparent from GridRegulasiEn where url = '" + url + "'";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
 	
-	public int getIdParentFromParentUrl(String parentUrl) {
-		String queryCount = "select idparent from GridRegulasi where parenturl = '" + parentUrl + "'";
+	public int getIdParentFromUrl(String url) {
+		String queryCount = "select idparent from GridRegulasi where url = '" + url + "'";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
 		cursor.moveToFirst();
@@ -410,7 +410,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		sqLiteDatabase.update("MenuRegulasi", values, "id="+id, null);
 	}
 
-	public void insertDataGridEn(int id, String title, String downloadurl, String filesize, String filetype, String parenturl, int idparent, int isread, String createdOn, String downloadedOn) {
+	public void insertDataGridEn(int id, String title, String downloadurl, String filesize, String filetype, String parenturl, int idparent, int isread, String createdOn, String downloadedOn, String url) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("id", id);
@@ -423,10 +423,11 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		values.put("isread", isread);
 		values.put("createdon", createdOn);
 		values.put("downloadedon", downloadedOn);
+		values.put("url", url);
 		sqLiteDatabase.insert("GridRegulasiEn", null, values);
 	}
 	
-	public void insertDataGrid(int id, String title, String downloadurl, String filesize, String filetype, String parenturl, int idparent, int isread, String createdOn, String downloadedOn) {
+	public void insertDataGrid(int id, String title, String downloadurl, String filesize, String filetype, String parenturl, int idparent, int isread, String createdOn, String downloadedOn, String url) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("id", id);
@@ -439,6 +440,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		values.put("isread", isread);
 		values.put("createdon", createdOn);
 		values.put("downloadedon", downloadedOn);
+		values.put("url", url);
 		sqLiteDatabase.insert("GridRegulasi", null, values);
 	}
 	
@@ -531,7 +533,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9));
+				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9), cursor.getString(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
@@ -546,7 +548,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9));
+				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9), cursor.getString(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
@@ -561,7 +563,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9));
+				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9), cursor.getString(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
@@ -576,7 +578,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9));
+				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9), cursor.getString(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
@@ -591,7 +593,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9));
+				ObjectItemGridView ObjData = new ObjectItemGridView(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5),cursor.getInt(6), cursor.getInt(7), cursor.getString(8), cursor.getString(9), cursor.getString(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
