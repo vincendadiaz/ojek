@@ -96,18 +96,33 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		return ListOfObj;
 	}
 	
-	public void updateCreatedOJKTerbaruUsingUrlEn(String downloadUrl, String newCreated) {
+	public void updateFileSizeOJKTerbaruUsingUrlEn(String url, String fileSize) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put("created", newCreated);
-		sqLiteDatabase.update("OjkTerbaruEn", values, "url='" + downloadUrl + "'", null);
+		values.put("filesize", fileSize);
+		sqLiteDatabase.update("OjkTerbaruEn", values, "url='" + url + "'", null);
 	}
 	
-	public void updateCreatedOJKTerbaruUsingUrl(String downloadUrl, String newCreated) {
+	public void updateFileSizeOJKTerbaruUsingUrl(String url, String fileSize) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("filesize", fileSize);
+		sqLiteDatabase.update("OjkTerbaru", values, "url='" + url + "'", null);
+	}
+	
+	
+	public void updateCreatedOJKTerbaruUsingUrlEn(String url, String newCreated) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("created", newCreated);
-		sqLiteDatabase.update("OjkTerbaru", values, "url='" + downloadUrl + "'", null);
+		sqLiteDatabase.update("OjkTerbaruEn", values, "url='" + url + "'", null);
+	}
+	
+	public void updateCreatedOJKTerbaruUsingUrl(String url, String newCreated) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("created", newCreated);
+		sqLiteDatabase.update("OjkTerbaru", values, "url='" + url + "'", null);
 	}
 	
 	public void updateCreatedOJKTerbaruEn(String url, String newCreated) {
@@ -124,50 +139,64 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		sqLiteDatabase.update("OjkTerbaru", values, "url='" + url + "'", null);
 	}
 	
-	public void updateCreatedGridEn(String newdownloadurl, String newcreated) {
+	public void updateFileSizeGridEn(String url, String fileSize) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("filesize", fileSize);
+		sqLiteDatabase.update("GridRegulasiEn", values, "url='" + url + "'", null);
+	}
+	
+	public void updateFileSizeGrid(String url, String fileSize) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("filesize", fileSize);
+		sqLiteDatabase.update("GridRegulasi", values, "url='" + url + "'", null);
+	}
+	
+	public void updateCreatedGridEn(String url, String newcreated) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("createdon", newcreated);
-		sqLiteDatabase.update("GridRegulasiEn", values, "downloadurl='" + newdownloadurl + "'", null);
-		updateIsReadEn(newdownloadurl);
-		updateIsDownloadedEn(newdownloadurl);
+		sqLiteDatabase.update("GridRegulasiEn", values, "url='" + url + "'", null);
+		updateIsReadEn(url);
+		updateIsDownloadedEn(url);
 	}
 	
-	public void updateCreatedGrid(String newdownloadurl, String newcreated) {
+	public void updateCreatedGrid(String url, String newcreated) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("createdon", newcreated);
-		sqLiteDatabase.update("GridRegulasi", values, "downloadurl='" + newdownloadurl + "'", null);
-		updateIsRead(newdownloadurl);
-		updateIsDownloaded(newdownloadurl);
+		sqLiteDatabase.update("GridRegulasi", values, "url='" + url + "'", null);
+		updateIsRead(url);
+		updateIsDownloaded(url);
 	}
 	
-	public void updateIsDownloadedEn(String newdownloadurl) {
+	public void updateIsDownloadedEn(String url) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("downloadedon", "no");
-		sqLiteDatabase.update("GridRegulasiEn", values, "downloadurl='" + newdownloadurl + "'", null);
+		sqLiteDatabase.update("GridRegulasiEn", values, "url='" + url + "'", null);
 	}
 	
-	public void updateIsDownloaded(String newdownloadurl) {
+	public void updateIsDownloaded(String url) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("downloadedon", "no");
-		sqLiteDatabase.update("GridRegulasi", values, "downloadurl='" + newdownloadurl + "'", null);
+		sqLiteDatabase.update("GridRegulasi", values, "url='" + url + "'", null);
 	}
 	
-	public void updateIsReadEn(String newdownloadurl) {
+	public void updateIsReadEn(String url) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("isread", 0);
-		sqLiteDatabase.update("GridRegulasiEn", values, "downloadurl='" + newdownloadurl + "'", null);
+		sqLiteDatabase.update("GridRegulasiEn", values, "url='" + url + "'", null);
 	}
 	
-	public void updateIsRead(String newdownloadurl) {
+	public void updateIsRead(String url) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("isread", 0);
-		sqLiteDatabase.update("GridRegulasi", values, "downloadurl='" + newdownloadurl + "'", null);
+		sqLiteDatabase.update("GridRegulasi", values, "url='" + url + "'", null);
 	}
 	
 	public int getCountAllOJKTerbaruEn() {

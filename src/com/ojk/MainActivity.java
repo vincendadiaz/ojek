@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 		PendingIntent pendingIntent = PendingIntent.getService(context, 0,
 				intent, 0);
 		alarmManager.setRepeating(AlarmManager.RTC, whenFirstNotification,
-				1000 * 30 * 60, pendingIntent);
+				1000 * 30, pendingIntent);
 		//
 
 		RelativeLayout menu1 = (RelativeLayout) findViewById(R.id.linearLayoutInside1);

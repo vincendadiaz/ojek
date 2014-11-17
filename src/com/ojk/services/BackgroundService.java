@@ -275,13 +275,18 @@ public class BackgroundService extends IntentService {
 							if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
 //								Log.d("disini", "d");
 								databaseMenuRegulasi.updateCreatedOJKTerbaruUsingUrl(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+								databaseMenuRegulasi.updateFileSizeOJKTerbaruUsingUrl(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
+								
 								// cek created dengan di DB pada GridRegulasi
 								for (int k = 0; k < grid.size(); k++) {
-									if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
+									if (Global.ObjectOJKTerbaru[i].url.equals(grid.get(k).itemUrl)) {
 //										Log.d("disini", "e");
 										if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
 //											Log.d("disini", "f");
+											
 											databaseMenuRegulasi.updateCreatedGrid(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+											databaseMenuRegulasi.updateFileSizeGrid(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
+											increase(grid.get(k).itemId, grid.get(k).itemIdParent);
 											counterNew++;
 											lastType = Global.ObjectOJKTerbaru[i].itemType;
 										}
@@ -308,9 +313,12 @@ public class BackgroundService extends IntentService {
 							//cek db di GridRegulasi
 							for (int k = 0; k < grid.size(); k++) {
 								// kalo ada update untuk Grid, tapi ternyata di OJK terbaru belum ada
-								if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
+								if (Global.ObjectOJKTerbaru[i].url.equals(grid.get(k).itemUrl)) {
 									if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
-										databaseMenuRegulasi.updateCreatedGrid(Global.ObjectOJKTerbaru[i].downloadUrl, Global.ObjectOJKTerbaru[i].created);
+										
+										databaseMenuRegulasi.updateCreatedGrid(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+										databaseMenuRegulasi.updateFileSizeGrid(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
+										increase(grid.get(k).itemId, grid.get(k).itemIdParent);
 										counterNew++;
 										lastType = Global.ObjectOJKTerbaru[i].itemType;
 									}
@@ -330,7 +338,9 @@ public class BackgroundService extends IntentService {
 									String newdownloaded = "no";
 									String newurl = Global.ObjectOJKTerbaru[i].url;
 									
-									databaseMenuRegulasi.insertDataGrid(newid+1, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded, newurl);		
+									
+									databaseMenuRegulasi.insertDataGrid(newid+1, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded, newurl);
+									increase(newid+1, newidparent);
 									counterNew++;
 									lastType = Global.ObjectOJKTerbaru[i].itemType;
 								}
@@ -456,10 +466,14 @@ public class BackgroundService extends IntentService {
 							if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
 								// cek created dengan di DB pada GridRegulasi
 								databaseMenuRegulasi.updateCreatedOJKTerbaruUsingUrlEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+								databaseMenuRegulasi.updateFileSizeOJKTerbaruUsingUrlEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
 								for (int k = 0; k < grid.size(); k++) {
-									if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
+									if (Global.ObjectOJKTerbaru[i].url.equals(grid.get(k).itemUrl)) {
 										if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
+											
 											databaseMenuRegulasi.updateCreatedGridEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+											databaseMenuRegulasi.updateFileSizeGridEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
+											increase(grid.get(k).itemId, grid.get(k).itemIdParent);
 											counterNew++;
 											lastType = Global.ObjectOJKTerbaru[i].itemType;
 										}
@@ -485,9 +499,12 @@ public class BackgroundService extends IntentService {
 							
 							//cek db di GridRegulasi
 							for (int k = 0; k < grid.size(); k++) {
-								if (Global.ObjectOJKTerbaru[i].downloadUrl.equals(grid.get(k).itemDownloadUrl)) {
+								if (Global.ObjectOJKTerbaru[i].url.equals(grid.get(k).itemUrl)) {
 									if (!Global.ObjectOJKTerbaru[i].created.equals(grid.get(k).createdOn)) {
-										databaseMenuRegulasi.updateCreatedGridEn(Global.ObjectOJKTerbaru[i].downloadUrl, Global.ObjectOJKTerbaru[i].created);
+										
+										databaseMenuRegulasi.updateCreatedGridEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+										databaseMenuRegulasi.updateFileSizeGridEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
+										increase(grid.get(k).itemId, grid.get(k).itemIdParent);
 										counterNew++;
 										lastType = Global.ObjectOJKTerbaru[i].itemType;
 									}
@@ -507,7 +524,9 @@ public class BackgroundService extends IntentService {
 									String newdownloaded = "no";
 									String newurl = Global.ObjectOJKTerbaru[i].url;
 									
+									
 									databaseMenuRegulasi.insertDataGridEn(newid+1, newtitle, newdownloadurl, newfilesize, newfiletype, newparenturl, newidparent, 0, newcreated, newdownloaded, newurl);		
+									increase(newid+1, newidparent);
 									counterNew++;
 									lastType = Global.ObjectOJKTerbaru[i].itemType;
 								}
@@ -622,5 +641,38 @@ public class BackgroundService extends IntentService {
 		// mId allows you to update the notification later on.
 		mNotificationManager.notify(1, mBuilder.build());
 
+	}
+	
+	public void increase(int id, int idParent) {
+		if (kodeBahasa.equals("en")) {
+			
+			if (!databaseMenuRegulasi.isReadEn(id)) {
+				//databaseMenuRegulasi.updateDataGridIsReadEn(id);
+
+				while (true) {
+					databaseMenuRegulasi
+							.updateDataEn(idParent, databaseMenuRegulasi
+									.getAnakCountEn(idParent) + 1);
+					idParent = databaseMenuRegulasi.getIdParentEn(idParent);
+					if (idParent == 0) {
+						break;
+					}
+				}
+			}
+		} else {
+			if (!databaseMenuRegulasi.isRead(id)) {
+				//databaseMenuRegulasi.updateDataGridIsRead(id);
+
+				while (true) {
+					databaseMenuRegulasi
+							.updateData(idParent, databaseMenuRegulasi
+									.getAnakCount(idParent) + 1);
+					idParent = databaseMenuRegulasi.getIdParent(idParent);
+					if (idParent == 0) {
+						break;
+					}
+				}
+			}
+		}
 	}
 }

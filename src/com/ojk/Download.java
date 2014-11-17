@@ -155,6 +155,21 @@ public class Download extends Activity {
 			String[] hasilSplit = idDanIdParent.split(",");
 			id = Integer.parseInt(hasilSplit[0]);
 			idParent = Integer.parseInt(hasilSplit[1]);
+			
+			if (bahasanya.equals("EN")) {
+				if (databasemenuregulasi.isDownloadedEn(id)) {
+					unduhFile.setText("Open");
+				} else {
+					unduhFile.setText("Download");
+				}
+				kodeBahasa = "en";
+			} else {
+				if (databasemenuregulasi.isDownloaded(id)) {
+					unduhFile.setText("Buka");
+				} else {
+					unduhFile.setText("Unduh");
+				}
+			}
 
 		}
 
@@ -393,7 +408,7 @@ public class Download extends Activity {
 
 				while (true) {
 					databasemenuregulasi
-							.updateData(idParent, databasemenuregulasi
+							.updateDataEn(idParent, databasemenuregulasi
 									.getAnakCountEn(idParent) - 1);
 					idParent = databasemenuregulasi.getIdParentEn(idParent);
 					if (idParent == 0) {
