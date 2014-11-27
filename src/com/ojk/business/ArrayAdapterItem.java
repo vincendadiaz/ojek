@@ -55,27 +55,22 @@ public class ArrayAdapterItem extends ArrayAdapter<ObjectItemListView> {
 
 		TextView textViewItem = (TextView) convertView
 				.findViewById(R.id.TextViewMenu);
-		try {
-			if (!objectItem.itemType.equals("null")) {
-				textViewItem.setText("[" + objectItem.itemType + "] "+ objectItem.itemName);
-			} else {
-				textViewItem.setText(objectItem.itemName);
-			}
-		} catch (Exception e) {
-			textViewItem.setText(objectItem.itemName);
-		}
+		
+		textViewItem.setText(objectItem.itemName);
+		
 		textViewItem.setTag(objectItem.itemId);
 
 		TextView textViewItemCount = (TextView) convertView
 				.findViewById(R.id.TextViewCount);
-		RelativeLayout relayoutcount = (RelativeLayout) convertView.findViewById(R.id.relayoutcount);
+		RelativeLayout relayoutcount = (RelativeLayout) convertView
+				.findViewById(R.id.relayoutcount);
 		if (textViewItemCount != null) {
 			if (objectItem.anakCount != 0) {
 				textViewItemCount.setText(objectItem.anakCount + "");
 				textViewItemCount.setTag(objectItem.itemId);
 			} else {
 				textViewItemCount.setVisibility(TextView.INVISIBLE);
-				relayoutcount.setVisibility(RelativeLayout.INVISIBLE);				
+				relayoutcount.setVisibility(RelativeLayout.INVISIBLE);
 			}
 		}
 

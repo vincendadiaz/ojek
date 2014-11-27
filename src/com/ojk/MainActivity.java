@@ -34,6 +34,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -149,6 +150,16 @@ public class MainActivity extends Activity {
 				Intent i = new Intent(MainActivity.this, About.class);
 				startActivityForResult(i, 0);
 				// overridePendingTransition(R.anim.slidein, R.anim.slideout);
+			}
+		});
+		
+		ImageButton setting = (ImageButton) findViewById(R.id.imageButtonSetting);
+		setting.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent i = new Intent(MainActivity.this, Setting.class);
+				startActivity(i);
 			}
 		});
 	}
@@ -447,20 +458,22 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.mainsetting, menu);
-		return super.onCreateOptionsMenu(menu);
+//		MenuInflater inflater = getMenuInflater();
+//		inflater.inflate(R.menu.mainsetting, menu);
+//		return super.onCreateOptionsMenu(menu);
+		return false;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_settings:
-			Intent i = new Intent(MainActivity.this, Setting.class);
-			startActivity(i);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
+//		switch (item.getItemId()) {
+//		case R.id.action_settings:
+//			Intent i = new Intent(MainActivity.this, Setting.class);
+//			startActivity(i);
+//			return true;
+//		}
+//		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
 	@Override

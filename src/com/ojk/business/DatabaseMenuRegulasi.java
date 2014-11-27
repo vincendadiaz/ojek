@@ -35,6 +35,56 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		db.execSQL(table);
 	}
 	
+	//drop drop table
+	public void dropMenuRegulasi(){
+		String drop = "DELETE FROM `MenuRegulasi`";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
+		cursor.moveToFirst();
+	}
+
+	public void dropMenuRegulasiEn() {
+		String drop = "DELETE FROM `MenuRegulasiEn`";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
+		cursor.moveToFirst();
+	}
+
+	public void dropGridRegulasi() {
+		String drop = "DELETE FROM `GridRegulasi`";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
+		cursor.moveToFirst();
+	}
+
+	public void dropGridRegulasiEn() {
+		String drop = "DELETE FROM `GridRegulasiEn`";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
+		cursor.moveToFirst();
+	}
+
+	public void dropOjkTerbaru() {
+		String drop = "DELETE FROM `OjkTerbaru`";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
+		cursor.moveToFirst();
+	}
+
+	public void dropOjkTerbaruEn() {
+		String drop = "DELETE FROM `OjkTerbaruEn`";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
+		cursor.moveToFirst();
+	}
+	
+	public void vacuum(){
+		String query = "VACUUM";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(query, null);
+		cursor.moveToFirst();
+	}
+	
 	// Query2 OJKTerbaru
 	public void insertDataOJKTerbaru(int id,String itemtype, String title, String downloadurl, String filesize, String filetype, String parenturl, String url, String created) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

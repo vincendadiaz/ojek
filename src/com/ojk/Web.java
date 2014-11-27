@@ -47,35 +47,42 @@ public class Web extends Activity {
 			setTitle(dummySplit[1]);
 			if (bahasanya.equals("EN")) {
 				if (value == 0) {
-					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Visi-Misi.aspx";
+					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Visi-Misi.aspx?mobile=1";
 				} else if (value == 1) {
-					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Tugas-dan-Fungsi.aspx";
+					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Tugas-dan-Fungsi.aspx?mobile=1";
 				} else if (value == 2) {
-					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Dewan-Komisioner.aspx";
+					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Dewan-Komisioner.aspx?mobile=1";
 				} else if (value == 3) {
-					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Nilai-Nilai.aspx";
+					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Nilai-Nilai.aspx?mobile=1";
 				} else if (value == 4) {
-					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Struktur-Organisasi.aspx";
+					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Struktur-Organisasi.aspx?mobile=1";
 				} else if (value == 5) {
-					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Kode-Etik-Pegawai.aspx";
+					url = "http://portalojk.dev.altrovis.com/en/tentang-ojk/Pages/Kode-Etik-Pegawai.aspx?mobile=1";
 				}
 			} else {
 				if (value == 0) {
-					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Visi-Misi.aspx";
+					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Visi-Misi.aspx?mobile=1";
 				} else if (value == 1) {
-					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Tugas-dan-Fungsi.aspx";
+					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Tugas-dan-Fungsi.aspx?mobile=1";
 				} else if (value == 2) {
-					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Dewan-Komisioner.aspx";
+					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Dewan-Komisioner.aspx?mobile=1";
 				} else if (value == 3) {
-					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Nilai-Nilai.aspx";
+					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Nilai-Nilai.aspx?mobile=1";
 				} else if (value == 4) {
-					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Struktur-Organisasi.aspx";
+					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Struktur-Organisasi.aspx?mobile=1";
 				} else if (value == 5) {
-					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Kode-Etik-Pegawai.aspx";
+					url = "http://portalojk.dev.altrovis.com/id/tentang-ojk/Pages/Kode-Etik-Pegawai.aspx?mobile=1";
 				}
 			}
 		} else if (getIntent().getExtras().containsKey("FromOJKTerbaruURL")) {
-			url = getIntent().getStringExtra("FromOJKTerbaruURL");
+			String extra = getIntent().getStringExtra("FromOJKTerbaruURL");
+			String[] splitExtra = extra.split(",");
+			String title = "Data dan Statistik";
+			if (splitExtra[0].contains("berita")) {
+				title = "Berita dan Kegiatan";
+			}
+			this.setTitle(title);
+			url = splitExtra[1];
 		}
 		
 		WebView webView = (WebView) findViewById(R.id.webview);

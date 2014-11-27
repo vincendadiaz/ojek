@@ -1,5 +1,6 @@
 package com.ojk;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -17,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,8 +84,17 @@ public class Setting extends Activity {
 	    	radioENID.setChecked(true);
 	    	setTitle("Settings");
 	    	
+	    	Button buttonOK = (Button) findViewById(R.id.buttonOKPilihBahasa);
+	    	buttonOK.setText("Save");
+	    	
+	    	Button buttonHapus = (Button) findViewById(R.id.buttonResetAllData);
+	    	buttonHapus.setText("Delete");
+	    	
 	    	TextView textViewPilihBahasa = (TextView) findViewById(R.id.textViewPilihBahasa);
 	    	textViewPilihBahasa.setText("Choose language :");
+	    	TextView textViewHapus = (TextView) findViewById(R.id.textViewResetAllData);
+	    	textViewHapus.setText("Reset all data");
+	    	
 	    }
 		
 		radioBahasa = (RadioGroup) findViewById(R.id.radioBahasa);
@@ -94,14 +105,14 @@ public class Setting extends Activity {
 				int selectedId = radioBahasa.getCheckedRadioButtonId();
 				radioENID = (RadioButton) findViewById(selectedId);
 
-				if (radioENID.getText().equals("INGGRIS")) {
+				if (radioENID.getText().equals("English")) {
 					SharedPreferences.Editor editor = getSharedPreferences(
 							"bahasa", MODE_PRIVATE).edit();
 					editor.putString("bahasanya", "EN");
 					editor.commit();
-					Toast.makeText(Setting.this,
-							"Please restart the application",
-							Toast.LENGTH_SHORT).show();
+//					Toast.makeText(Setting.this,
+//							"Please restart the application",
+//							Toast.LENGTH_SHORT).show();
 				} else {
 
 					SharedPreferences.Editor editor = getSharedPreferences(
@@ -109,10 +120,51 @@ public class Setting extends Activity {
 					editor.putString("bahasanya", "ID");
 					editor.commit();
 
-					Toast.makeText(Setting.this,
-							"Silahkan buka kembali aplikasi",
-							Toast.LENGTH_SHORT).show();
+//					Toast.makeText(Setting.this,
+//							"Silahkan buka kembali aplikasi",
+//							Toast.LENGTH_SHORT).show();
 				}
+				Intent i = getBaseContext().getPackageManager()
+						.getLaunchIntentForPackage(
+								getBaseContext().getPackageName());
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(i);
+			}
+		});
+		
+		Button buttonHapus = (Button) findViewById(R.id.buttonResetAllData);
+		
+		buttonHapus.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				databaseMenuRegulasi = new DatabaseMenuRegulasi(
+						getApplicationContext());
+				databaseMenuRegulasi.getWritableDatabase();
+				
+				databaseMenuRegulasi.dropGridRegulasi();
+				databaseMenuRegulasi.dropGridRegulasiEn();
+				databaseMenuRegulasi.dropMenuRegulasi();
+				databaseMenuRegulasi.dropMenuRegulasiEn();
+				databaseMenuRegulasi.dropOjkTerbaru();
+				databaseMenuRegulasi.dropOjkTerbaruEn();
+				databaseMenuRegulasi.vacuum();
+				
+				File dir = new File(Environment.getExternalStorageDirectory()
+						+ "/OJK");
+				if (dir.isDirectory()) {
+					String[] children = dir.list();
+					for (int i = 0; i < children.length; i++) {
+						new File(dir, children[i]).delete();
+					}
+				}
+				
+				Intent i = getBaseContext().getPackageManager()
+						.getLaunchIntentForPackage(
+								getBaseContext().getPackageName());
+				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(i);
 			}
 		});
 

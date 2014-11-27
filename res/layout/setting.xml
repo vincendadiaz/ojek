@@ -1,50 +1,81 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textViewPilihBahasa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:text="Pilih Bahasa : "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical" >
 
-    <RadioGroup
-        android:id="@+id/radioBahasa"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp" >
-
-        <RadioButton
-            android:id="@+id/radioID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="INDONESIA" />
-
-        <RadioButton
-            android:id="@+id/radioEN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="INGGRIS" />
-    </RadioGroup>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/buttonOKPilihBahasa"
+        <TextView
+            android:id="@+id/textViewPilihBahasa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
-            android:text="OK" />
-    </RelativeLayout>
+            android:text="Pilih Bahasa : "
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-</LinearLayout>
+        <RadioGroup
+            android:id="@+id/radioBahasa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp" >
+
+            <RadioButton
+                android:id="@+id/radioID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bahasa Indonesia" />
+
+            <RadioButton
+                android:id="@+id/radioEN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="English" />
+        </RadioGroup>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/buttonOKPilihBahasa"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="30dp"
+                android:text="Simpan" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewResetAllData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="30dp"
+            android:text="Hapus semua data"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/buttonResetAllData"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:text="Hapus" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

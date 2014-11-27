@@ -169,6 +169,23 @@
             android:text="OJK App Ver 0.1"
             android:textAlignment="center"
             android:textColor="#FFFFFF" />
+
+        <RelativeLayout
+            android:id="@+id/relLayoutSetting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+			android:layout_alignParentRight="true"
+			android:layout_margin="6dp"
+			android:background="#c70100"
+            android:layout_below="@id/linearLayoutShadow">
+
+            <ImageButton
+                android:id="@+id/imageButtonSetting"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="6dp"
+                android:background="@drawable/setting" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>

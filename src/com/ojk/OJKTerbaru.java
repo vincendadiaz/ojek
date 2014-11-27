@@ -111,7 +111,8 @@ public class OJKTerbaru extends Activity {
 							view.setBackgroundColor(color.black);
 							if (!ObjectItemData[position].itemType.equals("regulasi")) {
 								Intent i = new Intent(OJKTerbaru.this, Web.class);
-								i.putExtra("FromOJKTerbaruURL", ObjectItemData[position].url);
+								String extra = ObjectItemData[position].fileType + "," + ObjectItemData[position].url+"?mobile=1"; 
+								i.putExtra("FromOJKTerbaruURL", extra);
 								startActivity(i);
 							} else {
 								Intent i = new Intent(OJKTerbaru.this, Download.class);
