@@ -41,7 +41,7 @@ public class BackgroundService extends IntentService {
 	private DatabaseMenuRegulasi databaseMenuRegulasi;
 	private ObjectItemListView ObjekDariDB = null;
 	private int counterNew = 0;
-	private String lastType = "";
+	private String lastType = "konten";
 	
 	public BackgroundService() {
 		super("BackgroundService");
@@ -97,29 +97,40 @@ public class BackgroundService extends IntentService {
 			databaseMenuRegulasi.getWritableDatabase();
 			
 			if (pertamaxx.equals("no")) {
+				Log.d("errorBG", "1");
 				if(OpenJSON(urlMenu)) {
+					
 					if (kodeBahasa.equals("id")) {
 						CekDB();
+						Log.d("errorBG", "2");
 					} else {
 						CekDBEn();
+						Log.d("errorBG", "3");
 					}
+					Log.d("errorBG", "4");
 				}
 			} else {
 				if (OpenJSON(urlMenu)) {
 					MasukinDB();
+					
 					if (kodeBahasa.equals("id")) {
 						CekDB();
+						Log.d("errorBG", "6");
 					} else {
 						CekDBEn();
+						Log.d("errorBG", "7");
 					}
+					Log.d("errorBG", "8");
 				}
 			}
 			
 			//nyalain notif
 			if (counterNew == 1) {
 				createNotification(lastType);
+				Log.d("errorBG", "9");
 			} else if(counterNew > 1) {
 				createNotificationMany();
+				Log.d("errorBG", "10");
 			}
 			
 		} catch (Exception e) {
@@ -137,11 +148,13 @@ public class BackgroundService extends IntentService {
 			String parentUrl = Global.ObjectOJKTerbaru[i].parentUrl.toString();
 			String url = Global.ObjectOJKTerbaru[i].url.toString();
 			String created = Global.ObjectOJKTerbaru[i].created.toString();
+			String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+			int isread = Global.ObjectOJKTerbaru[i].isread;
 			
 			if (kodeBahasa.equals("id")) {
-				databaseMenuRegulasi.insertDataOJKTerbaru(i+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+				databaseMenuRegulasi.insertDataOJKTerbaru(i+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 			} else {
-				databaseMenuRegulasi.insertDataOJKTerbaruEn(i+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);	
+				databaseMenuRegulasi.insertDataOJKTerbaruEn(i+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);	
 			}
 		}
 		Log.d("MasukinDB", "MasukinDB");
@@ -176,7 +189,10 @@ public class BackgroundService extends IntentService {
 					String url = Global.ObjectOJKTerbaru[i].url.toString();
 					String created = Global.ObjectOJKTerbaru[i].created.toString();
 					
-					databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+					String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+					int isread = Global.ObjectOJKTerbaru[i].isread;
+					
+					databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 				}
 			}
 		}
@@ -195,8 +211,9 @@ public class BackgroundService extends IntentService {
 					String parentUrl = Global.ObjectOJKTerbaru[i].parentUrl.toString();
 					String url = Global.ObjectOJKTerbaru[i].url.toString();
 					String created = Global.ObjectOJKTerbaru[i].created.toString();
-					
-					databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+					String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+					int isread = Global.ObjectOJKTerbaru[i].isread;
+					databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 
 				}
 			}
@@ -232,6 +249,18 @@ public class BackgroundService extends IntentService {
 						if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBNonReg.get(j).created)) {
 //							Log.d("disini", "c");
 							databaseMenuRegulasi.updateCreatedOJKTerbaru(dataDariDBNonReg.get(j).url, Global.ObjectOJKTerbaru[i].created);
+							databaseMenuRegulasi.updateUnReadOJKTerbaru(dataDariDBNonReg.get(j).url);
+							String[] dummy = Global.ObjectOJKTerbaru[i].created.split(" ");
+							String jam = dummy[1];
+							String date = dummy[0];
+							String[] dummyDate = date.split("-");
+							String tanggal = dummyDate[0];
+							String bulan = dummyDate[1];
+							String tahun = dummyDate[2];
+							String sortdate = tahun + bulan + tanggal + jam;
+							
+							databaseMenuRegulasi.updateSortdateOJKTerbaru(dataDariDBNonReg.get(j).url, sortdate);
+							
 							counterNew++;
 							lastType = Global.ObjectOJKTerbaru[i].itemType;
 						}
@@ -250,7 +279,10 @@ public class BackgroundService extends IntentService {
 						String url = Global.ObjectOJKTerbaru[i].url.toString();
 						String created = Global.ObjectOJKTerbaru[i].created.toString();
 						
-						databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+						String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+						int isread = Global.ObjectOJKTerbaru[i].isread;
+						
+						databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 						counterNew++;
 						lastType = Global.ObjectOJKTerbaru[i].itemType;
 					}
@@ -275,6 +307,18 @@ public class BackgroundService extends IntentService {
 							if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
 //								Log.d("disini", "d");
 								databaseMenuRegulasi.updateCreatedOJKTerbaruUsingUrl(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+								databaseMenuRegulasi.updateUnReadOJKTerbaru(Global.ObjectOJKTerbaru[i].url);
+								String[] dummy = Global.ObjectOJKTerbaru[i].created.split(" ");
+								String jam = dummy[1];
+								String date = dummy[0];
+								String[] dummyDate = date.split("-");
+								String tanggal = dummyDate[0];
+								String bulan = dummyDate[1];
+								String tahun = dummyDate[2];
+								String sortdate = tahun + bulan + tanggal + jam;
+								
+								databaseMenuRegulasi.updateSortdateOJKTerbaru(Global.ObjectOJKTerbaru[i].url, sortdate);
+								
 								databaseMenuRegulasi.updateFileSizeOJKTerbaruUsingUrl(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
 								
 								// cek created dengan di DB pada GridRegulasi
@@ -308,7 +352,10 @@ public class BackgroundService extends IntentService {
 							String url = Global.ObjectOJKTerbaru[i].url.toString();
 							String created = Global.ObjectOJKTerbaru[i].created.toString();
 							
-							databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+							String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+							int isread = Global.ObjectOJKTerbaru[i].isread;
+							
+							databaseMenuRegulasi.insertDataOJKTerbaru(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 							
 							//cek db di GridRegulasi
 							for (int k = 0; k < grid.size(); k++) {
@@ -380,7 +427,10 @@ public class BackgroundService extends IntentService {
 					String url = Global.ObjectOJKTerbaru[i].url.toString();
 					String created = Global.ObjectOJKTerbaru[i].created.toString();
 					
-					databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+					String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+					int isread = Global.ObjectOJKTerbaru[i].isread;
+					
+					databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 				}
 			}
 		}
@@ -399,7 +449,10 @@ public class BackgroundService extends IntentService {
 					String url = Global.ObjectOJKTerbaru[i].url.toString();
 					String created = Global.ObjectOJKTerbaru[i].created.toString();
 					
-					databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+					String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+					int isread = Global.ObjectOJKTerbaru[i].isread;
+					
+					databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 
 				}
 			}
@@ -427,6 +480,18 @@ public class BackgroundService extends IntentService {
 						// cek created, kalo ga sama update
 						if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBNonReg.get(j).created)) {
 							databaseMenuRegulasi.updateCreatedOJKTerbaruEn(dataDariDBNonReg.get(j).url, Global.ObjectOJKTerbaru[i].created);
+							databaseMenuRegulasi.updateUnReadOJKTerbaruEn(dataDariDBNonReg.get(j).url);
+							String[] dummy = Global.ObjectOJKTerbaru[i].created.split(" ");
+							String jam = dummy[1];
+							String date = dummy[0];
+							String[] dummyDate = date.split("-");
+							String tanggal = dummyDate[0];
+							String bulan = dummyDate[1];
+							String tahun = dummyDate[2];
+							String sortdate = tahun + bulan + tanggal + jam;
+							
+							databaseMenuRegulasi.updateSortdateOJKTerbaruEn(dataDariDBNonReg.get(j).url, sortdate);
+							
 							counterNew++;
 							lastType = Global.ObjectOJKTerbaru[i].itemType;
 						}
@@ -444,7 +509,10 @@ public class BackgroundService extends IntentService {
 						String url = Global.ObjectOJKTerbaru[i].url.toString();
 						String created = Global.ObjectOJKTerbaru[i].created.toString();
 						
-						databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+						String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+						int isread = Global.ObjectOJKTerbaru[i].isread;
+						
+						databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 						counterNew++;
 						lastType = Global.ObjectOJKTerbaru[i].itemType;
 					}
@@ -466,6 +534,18 @@ public class BackgroundService extends IntentService {
 							if (!Global.ObjectOJKTerbaru[i].created.equals(dataDariDBReg.get(j).created)) {
 								// cek created dengan di DB pada GridRegulasi
 								databaseMenuRegulasi.updateCreatedOJKTerbaruUsingUrlEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].created);
+								databaseMenuRegulasi.updateUnReadOJKTerbaruEn(Global.ObjectOJKTerbaru[i].url);
+								String[] dummy = Global.ObjectOJKTerbaru[i].created.split(" ");
+								String jam = dummy[1];
+								String date = dummy[0];
+								String[] dummyDate = date.split("-");
+								String tanggal = dummyDate[0];
+								String bulan = dummyDate[1];
+								String tahun = dummyDate[2];
+								String sortdate = tahun + bulan + tanggal + jam;
+								
+								databaseMenuRegulasi.updateSortdateOJKTerbaruEn(Global.ObjectOJKTerbaru[i].url, sortdate);
+								
 								databaseMenuRegulasi.updateFileSizeOJKTerbaruUsingUrlEn(Global.ObjectOJKTerbaru[i].url, Global.ObjectOJKTerbaru[i].fileSize);
 								for (int k = 0; k < grid.size(); k++) {
 									if (Global.ObjectOJKTerbaru[i].url.equals(grid.get(k).itemUrl)) {
@@ -495,7 +575,10 @@ public class BackgroundService extends IntentService {
 							String url = Global.ObjectOJKTerbaru[i].url.toString();
 							String created = Global.ObjectOJKTerbaru[i].created.toString();
 							
-							databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created);
+							String sortdate = Global.ObjectOJKTerbaru[i].sortdate.toString();
+							int isread = Global.ObjectOJKTerbaru[i].isread;
+							
+							databaseMenuRegulasi.insertDataOJKTerbaruEn(id+1, itemType, title, downloadUrl, fileSize, fileType, parentUrl, url, created, sortdate, isread);
 							
 							//cek db di GridRegulasi
 							for (int k = 0; k < grid.size(); k++) {
@@ -560,9 +643,20 @@ public class BackgroundService extends IntentService {
 					String parentUrl = obj.getString("ParentUrl").toString();
 					String url = obj.getString("Url").toString();
 					String created = obj.getString("Created").toString();
+					
+					String[] dummy = created.split(" ");
+					String jam = dummy[1];
+					String date = dummy[0];
+					String[] dummyDate = date.split("-");
+					String tanggal = dummyDate[0];
+					String bulan = dummyDate[1];
+					String tahun = dummyDate[2];
+					String sortdate = tahun + bulan + tanggal + jam;
+					int isread = 0;
+					
 					objekIsiOJKTerbaru = new ObjectItemListView(itemType,
 							judul, downloadUrl, fileSize, fileType, parentUrl,
-							url, created);
+							url, created, sortdate, isread);
 					Global.ObjectOJKTerbaru[i] = objekIsiOJKTerbaru;
 				} catch (JSONException e) {
 					Log.e("JSONError di ", e.toString());
@@ -616,13 +710,23 @@ public class BackgroundService extends IntentService {
 	private void createNotification (String tipe) {
 		Log.d("NotifBaru", "satu");
 		NotificationCompat.Builder mBuilder = null;
-
+		
 		if (kodeBahasa.equals("id")) {
+			if (tipe.contains("statistik")) {
+				tipe = "Data dan Statistik";
+			} else if (tipe.contains("kegiatan")) {
+				tipe = "Berita dan Kegiatan";
+			}
 			mBuilder = new NotificationCompat.Builder(this)
 					.setSmallIcon(R.drawable.ic_launcher)
 					.setContentTitle("OJK")
 					.setContentText("Terdapat " + tipe +" baru");
 		} else {
+			if (tipe.contains("statistic")) {
+				tipe = "Data and Statistic";
+			} else if (tipe.contains("info")) {
+				tipe = "News and Info";
+			}
 			mBuilder = new NotificationCompat.Builder(this)
 					.setSmallIcon(R.drawable.ic_launcher)
 					.setContentTitle("OJK")

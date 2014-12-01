@@ -62,6 +62,9 @@ public class MainActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 		}
 
+		databaseMenuRegulasi = new DatabaseMenuRegulasi(getApplicationContext());
+		databaseMenuRegulasi.getWritableDatabase();
+
 		if (bahasanya.equals("ID")) {
 			kodeBahasa = "id";
 			// Toast.makeText(this,"Indo", Toast.LENGTH_SHORT)
@@ -98,8 +101,8 @@ public class MainActivity extends Activity {
 		String localTimeA = date.format(currentLocalTime);
 		String dummy[] = localTimeA.split(" ");
 		String localTime = dummy[0] + "%20" + dummy[1];
-		
-//		String localTime = "02-11-2014%2012:00";
+
+		// String localTime = "02-11-2014%2012:00";
 		firstNotification.setTime(currentLocalTime);
 		// firstNotification.set(Calendar.HOUR,
 		// firstNotification.get(firstNotification.HOUR) - 2);
@@ -152,10 +155,10 @@ public class MainActivity extends Activity {
 				// overridePendingTransition(R.anim.slidein, R.anim.slideout);
 			}
 		});
-		
+
 		ImageButton setting = (ImageButton) findViewById(R.id.imageButtonSetting);
 		setting.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(MainActivity.this, Setting.class);
@@ -232,24 +235,58 @@ public class MainActivity extends Activity {
 			}
 			databaseMenuRegulasi.close();
 			// Log.d("JUMLAH GRID", ""+databaseMenuRegulasi.fetchDataGrid());
+			RelativeLayout relLayoutRegMain = (RelativeLayout) findViewById(R.id.relLayoutCountMainReg);
+			RelativeLayout relLayoutOjkTerbaruMain = (RelativeLayout) findViewById(R.id.relLayoutCountMainOJKTerbaru);
 			TextView textViewCountRegulasi = (TextView) findViewById(R.id.TextViewCount);
 			TextView textViewCountOJKTerbaru = (TextView) findViewById(R.id.TextViewCount2);
 			if (kodeBahasa.equals("en")) {
-				textViewCountRegulasi
-						.setText("  "
-								+ databaseMenuRegulasi
-										.getCountAllGridUnreadEn() + "  ");
-				textViewCountOJKTerbaru
-						.setText("  "
-								+ databaseMenuRegulasi
-										.getCountAllOJKTerbaruEn() + "  ");
+//				textViewCountRegulasi.setText(""+databaseMenuRegulasi
+//						.getCountAllGridUnreadEn());
+//				textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+//						.getCountAllOJKTerbaruUnreadEn());
+				int jumlahReg = databaseMenuRegulasi.getCountAllGridUnreadEn();
+				int jumlahOjkTerbaru = databaseMenuRegulasi
+						.getCountAllOJKTerbaruUnreadEn();
+				if (jumlahReg > 99) {
+					textViewCountRegulasi.setText("99+");
+				} else if (jumlahReg == 0) {
+					relLayoutRegMain.setVisibility(View.INVISIBLE);
+				} else {
+					textViewCountRegulasi.setText(""+databaseMenuRegulasi
+							.getCountAllGridUnreadEn());
+				}
+				if (jumlahOjkTerbaru > 99) {
+					textViewCountOJKTerbaru.setText("99+");
+				} else if (jumlahOjkTerbaru == 0) {
+					relLayoutOjkTerbaruMain.setVisibility(View.INVISIBLE);
+				} else {
+					textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+							.getCountAllOJKTerbaruUnreadEn());
+				}
 			} else {
-				textViewCountRegulasi.setText("  "
-						+ databaseMenuRegulasi.getCountAllGridUnread() + "  ");
-				textViewCountOJKTerbaru
-						.setText("  "
-								+ databaseMenuRegulasi
-										.getCountAllOJKTerbaru() + "  ");
+//				textViewCountRegulasi.setText(""+databaseMenuRegulasi
+//						.getCountAllGridUnread());
+//				textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+//						.getCountAllOJKTerbaruUnread());
+				int jumlahReg = databaseMenuRegulasi.getCountAllGridUnread();
+				int jumlahOjkTerbaru = databaseMenuRegulasi
+						.getCountAllOJKTerbaruUnread();
+				if (jumlahReg > 99) {
+					textViewCountRegulasi.setText("99+");
+				} else if (jumlahReg == 0) {
+					relLayoutRegMain.setVisibility(View.INVISIBLE);
+				} else {
+					textViewCountRegulasi.setText(""+databaseMenuRegulasi
+							.getCountAllGridUnread());
+				}
+				if (jumlahOjkTerbaru > 99) {
+					textViewCountOJKTerbaru.setText("99+");
+				} else if (jumlahOjkTerbaru == 0) {
+					relLayoutOjkTerbaruMain.setVisibility(View.INVISIBLE);
+				} else {
+					textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+							.getCountAllOJKTerbaruUnread());
+				}
 			}
 
 		}
@@ -265,7 +302,7 @@ public class MainActivity extends Activity {
 					getApplicationContext());
 			databaseMenuRegulasi.getWritableDatabase();
 
-			databaseMenuRegulasi.close();
+			// databaseMenuRegulasi.close();
 
 			return null;
 		}
@@ -281,10 +318,10 @@ public class MainActivity extends Activity {
 			JSONArray json = jParser.getJSONFromUrl(urlWeb);
 
 			if (kodeBahasa.equals("id")
-					&& databaseMenuRegulasi.getCountAll() == 0) {
+					&& databaseMenuRegulasi.getCountAll() <= 2) {
 				GenerateMenuRegulasiDatabase(id, json);
 			} else if (kodeBahasa.equals("en")
-					&& databaseMenuRegulasi.getCountAllEn() == 0) {
+					&& databaseMenuRegulasi.getCountAllEn() <= 2) {
 				GenerateMenuRegulasiDatabaseEn(id, json);
 			}
 		}
@@ -383,7 +420,7 @@ public class MainActivity extends Activity {
 					databaseMenuRegulasi.insertDataEn(id, judul, url, idParent,
 							isLastChild, jumlahAnaknya);
 					if (!url.equals("#")) {
-						int x = inputAnakGrid(url, id);
+						int x = inputAnakGridEn(url, id);
 						int temp = id;
 						while (true) {
 							databaseMenuRegulasi.updateDataEn(temp,
@@ -424,7 +461,6 @@ public class MainActivity extends Activity {
 				String created = obj.getString("Created").toString();
 				String downloaded = "no";
 				String itemUrl = obj.getString("Url").toString();
-						
 
 				databaseMenuRegulasi.insertDataGridEn(idGrid, judul,
 						downloadUrl, fileSize, fileType, parentUrl, idParent,
@@ -458,33 +494,78 @@ public class MainActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-//		MenuInflater inflater = getMenuInflater();
-//		inflater.inflate(R.menu.mainsetting, menu);
-//		return super.onCreateOptionsMenu(menu);
+		// MenuInflater inflater = getMenuInflater();
+		// inflater.inflate(R.menu.mainsetting, menu);
+		// return super.onCreateOptionsMenu(menu);
 		return false;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-//		switch (item.getItemId()) {
-//		case R.id.action_settings:
-//			Intent i = new Intent(MainActivity.this, Setting.class);
-//			startActivity(i);
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
+		// switch (item.getItemId()) {
+		// case R.id.action_settings:
+		// Intent i = new Intent(MainActivity.this, Setting.class);
+		// startActivity(i);
+		// return true;
+		// }
+		// return super.onOptionsItemSelected(item);
 		return false;
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		RelativeLayout relLayoutRegMain = (RelativeLayout) findViewById(R.id.relLayoutCountMainReg);
+		RelativeLayout relLayoutOjkTerbaruMain = (RelativeLayout) findViewById(R.id.relLayoutCountMainOJKTerbaru);
 		TextView textViewCountRegulasi = (TextView) findViewById(R.id.TextViewCount);
+		TextView textViewCountOJKTerbaru = (TextView) findViewById(R.id.TextViewCount2);
 		if (kodeBahasa.equals("en")) {
-			textViewCountRegulasi.setText("  "
-					+ databaseMenuRegulasi.getCountAllGridUnreadEn() + "  ");
+//			textViewCountRegulasi.setText(""+databaseMenuRegulasi
+//					.getCountAllGridUnreadEn());
+//			textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+//					.getCountAllOJKTerbaruUnreadEn());
+			int jumlahReg = databaseMenuRegulasi.getCountAllGridUnread();
+			int jumlahOjkTerbaru = databaseMenuRegulasi
+					.getCountAllOJKTerbaruUnreadEn();
+			if (jumlahReg > 99) {
+				textViewCountRegulasi.setText("99+");
+			} else if (jumlahReg == 0) {
+				relLayoutRegMain.setVisibility(View.INVISIBLE);
+			} else {
+				textViewCountRegulasi.setText(""+databaseMenuRegulasi
+						.getCountAllGridUnreadEn());
+			}
+			if (jumlahOjkTerbaru > 99) {
+				textViewCountOJKTerbaru.setText("99+");
+			} else if (jumlahOjkTerbaru == 0) {
+				relLayoutOjkTerbaruMain.setVisibility(View.INVISIBLE);
+			} else {
+				textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+						.getCountAllOJKTerbaruUnreadEn());
+			}
 		} else {
-			textViewCountRegulasi.setText("  "
-					+ databaseMenuRegulasi.getCountAllGridUnread() + "  ");
+//			textViewCountRegulasi.setText(""+databaseMenuRegulasi
+//					.getCountAllGridUnread());
+//			textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+//					.getCountAllOJKTerbaruUnread());
+			int jumlahReg = databaseMenuRegulasi.getCountAllGridUnread();
+			int jumlahOjkTerbaru = databaseMenuRegulasi
+					.getCountAllOJKTerbaruUnread();
+			if (jumlahReg > 99) {
+				textViewCountRegulasi.setText("99+");
+			} else if (jumlahReg == 0) {
+				relLayoutRegMain.setVisibility(View.INVISIBLE);
+			} else {
+				textViewCountRegulasi.setText(""+databaseMenuRegulasi
+						.getCountAllGridUnread());
+			}
+			if (jumlahOjkTerbaru > 99) {
+				textViewCountOJKTerbaru.setText("99+");
+			} else if (jumlahOjkTerbaru == 0) {
+				relLayoutOjkTerbaruMain.setVisibility(View.INVISIBLE);
+			} else {
+				textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
+						.getCountAllOJKTerbaruUnread());
+			}
 		}
 	}
 }

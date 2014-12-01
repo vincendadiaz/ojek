@@ -53,6 +53,7 @@ public class Download extends Activity {
 	private int id = 0;
 	private int idParent = 0;
 	private DatabaseMenuRegulasi databasemenuregulasi;
+	private String urlDariOJKTerbaru = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +143,7 @@ public class Download extends Activity {
 			tipeFile = splitExtra[2];
 
 			downloadLinkUrl = splitExtra[3];
+			urlDariOJKTerbaru = splitExtra[4];
 			
 			String idDanIdParent = "";
 			if (bahasanya.equals("ID")) {
@@ -405,11 +407,18 @@ public class Download extends Activity {
 			
 			if (!databasemenuregulasi.isReadEn(id)) {
 				databasemenuregulasi.updateDataGridIsReadEn(id);
+				
+				// kalo ada di OJK terbaru, kalo ada decrease
+				if (databasemenuregulasi.cekDiOJKTerbaruEn(urlDariOJKTerbaru)) {
+					if (!databasemenuregulasi.isReadOJKTerbaruEn(urlDariOJKTerbaru)) {
+						databasemenuregulasi.updateIsReadOJKTerbaruEn(urlDariOJKTerbaru);
+					}
+				}
 
 				while (true) {
 					databasemenuregulasi
 							.updateDataEn(idParent, databasemenuregulasi
-									.getAnakCountEn(idParent) - 1);
+									.getAnakCountEn(idParent) - 1);	
 					idParent = databasemenuregulasi.getIdParentEn(idParent);
 					if (idParent == 0) {
 						break;
@@ -420,6 +429,13 @@ public class Download extends Activity {
 			if (!databasemenuregulasi.isRead(id)) {
 				databasemenuregulasi.updateDataGridIsRead(id);
 
+				// kalo ada di OJK terbaru, kalo ada decrease
+				if (databasemenuregulasi.cekDiOJKTerbaru(urlDariOJKTerbaru)) {
+					if (!databasemenuregulasi.isReadOJKTerbaru(urlDariOJKTerbaru)) {
+						databasemenuregulasi.updateIsReadOJKTerbaru(urlDariOJKTerbaru);
+					}
+				}
+				
 				while (true) {
 					databasemenuregulasi
 							.updateData(idParent, databasemenuregulasi

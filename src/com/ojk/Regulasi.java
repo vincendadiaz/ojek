@@ -65,11 +65,13 @@ public class Regulasi extends Activity {
 		databaseMenuRegulasi.getWritableDatabase();
 
 		// DEBUG ISI
-//		 ArrayList isiDatabaseMenuRegulasi = databaseMenuRegulasi.fetchDataGrid();
-//		 Log.d("IsiDBnya", isiDatabaseMenuRegulasi.toString());
-		// Toast.makeText(getApplicationContext(),
-		// "" + databaseMenuRegulasi.getCountFromIDParent(2),
-		// Toast.LENGTH_LONG).show();
+//		 ArrayList isiGridDatabaseMenuRegulasi = databaseMenuRegulasi.fetchDataGrid();
+//		 Log.d("IsiDBnya", isiGridDatabaseMenuRegulasi.toString());
+//		 ArrayList isiMenuDatabaseMenuRegulasi = databaseMenuRegulasi.fetchData();
+//		 Log.d("IsiMenunya", isiMenuDatabaseMenuRegulasi.toString());
+//		 Toast.makeText(getApplicationContext(),
+//		 "" + databaseMenuRegulasi.getCountFromIDParent(2),
+//		 Toast.LENGTH_LONG).show();
 
 		if (bahasanya.equals("EN")) {
 			kodeBahasa = "en";
@@ -125,6 +127,15 @@ public class Regulasi extends Activity {
 				}
 			}
 		}
+		
+		if (ObjectItemData.length == 0) {
+			TextView textViewListKosong = (TextView) findViewById(R.id.TextViewListKosong);
+			if (kodeBahasa.equals("id")) {
+				textViewListKosong.setText("Tidak ada Regulasi");
+			} else {
+				textViewListKosong.setText("There is no Regulation");
+			}
+		}
 
 		ArrayAdapterItem adapter = new ArrayAdapterItem(this,
 				R.layout.listviewadapter, ObjectItemData);
@@ -139,12 +150,14 @@ public class Regulasi extends Activity {
 						view.setBackgroundColor(color.black);
 
 						if (ObjectItemData[position].isLastChild == 0) {
+							Global.menuPathString = Global.menuPathString + position + "%20";
 							Intent i = new Intent(Regulasi.this, Regulasi.class);
 							String carry = "" + ObjectItemData[position].itemId
 									+ "," + ObjectItemData[position].itemName;
 							i.putExtra("ObjectItemDataCarry", "" + carry);
 							startActivityForResult(i, 0);
 						} else {
+							Global.menuPathString = Global.menuPathString + position + "%20";
 							Intent i = new Intent(Regulasi.this, GridBook.class);
 							String title = "title";
 							title = ObjectItemData[position].itemName
@@ -158,7 +171,11 @@ public class Regulasi extends Activity {
 					}
 				});
 		listViewItems.setAdapter(adapter);
-
+		try{
+		Log.d("menuPathString", Global.menuPathString.substring(0, Global.menuPathString.length()));
+		} catch(Exception e) {
+			Log.d("errorSubstring", e.toString());
+		}
 	}
 
 	@Override
@@ -177,6 +194,7 @@ public class Regulasi extends Activity {
 			// overridePendingTransition(R.anim.slideout, R.anim.slidein);
 			return true;
 		case R.id.action_search:
+			Global.menuPathString = Global.menuPathString + "X" + "%20";
 			Intent i = new Intent(Regulasi.this, Search.class);
 			startActivityForResult(i, 0);
 			return true;
@@ -189,6 +207,17 @@ public class Regulasi extends Activity {
 		SharedPreferences settings = getSharedPreferences("bahasa",
 				MODE_PRIVATE);
 		String bahasanya = settings.getString("bahasanya", "ID");
+		
+		try{
+		Global.menuPathString = Global.menuPathString.substring(0, Global.menuPathString.length()-4);
+		} catch (Exception e) {
+			Log.d("errorsubstrin", e.toString());
+		}
+		try{
+			Log.d("menuPathString", Global.menuPathString.substring(0, Global.menuPathString.length()));
+			} catch(Exception e) {
+				Log.d("errorSubstring", e.toString());
+			}
 		
 		if (bahasanya.equals("EN")) {
 			kodeBahasa = "en";

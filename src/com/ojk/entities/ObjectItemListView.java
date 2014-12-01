@@ -20,9 +20,11 @@ public class ObjectItemListView implements Serializable {
     public String fileType;
     public String parentUrl;
     public String created;
+    public int isread;
+    public String sortdate;
     
     //Khusus untuk OJKTerbaru
-    public ObjectItemListView(String itemType, String itemName, String downloadUrl, String fileSize, String fileType, String parentUrl, String url, String created){
+    public ObjectItemListView(String itemType, String itemName, String downloadUrl, String fileSize, String fileType, String parentUrl, String url, String created, String sortdate, int isread){
     	this.itemType = itemType;
     	this.itemName = itemName;
     	this.downloadUrl = downloadUrl;
@@ -31,6 +33,8 @@ public class ObjectItemListView implements Serializable {
     	this.parentUrl = parentUrl;
     	this.url = url;
     	this.created = created;
+    	this.sortdate = sortdate;
+    	this.isread = isread;
     }
     
     public ObjectItemListView(int itemId, String itemName, String url, int idParent, int isLastChild ,int anakCount) {

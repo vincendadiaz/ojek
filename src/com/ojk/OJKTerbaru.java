@@ -15,6 +15,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,23 +79,6 @@ public class OJKTerbaru extends Activity {
 				textViewListKosong.setText("There is no latest OJK");
 			}
 		}
-		
-//		ObjectItemData = Global.ObjectOJKTerbaru;
-//
-//		/**
-//		 * Yang bakalan ga akan hardcode !!! bakalan ngambil dari JSON !!!
-//		 */
-//		ObjectItemData[0] = new ObjectItemListView(
-//				0,
-//				"Siaran Pers: OJK Dorong Penyiapan Sumber Daya Manusia Sektor Keuangan Syariah yang Berkualitas");
-//		ObjectItemData[1] = new ObjectItemListView(1,
-//				"Siaran Pers: OJK Tandatangani Nota Kesepahaman dengan Lembaga Sandi Negara");
-//		ObjectItemData[2] = new ObjectItemListView(
-//				2,
-//				"Siaran Pers: OJK dan CBRC Menandatangani Pre-Memorandum of Understanding (MoU) dalam Pengawasan Industri Jasa Keuangan");
-		// ObjectItemData[3] = new ObjectItemListView(3,
-		// "[Regulasi] Undang-undang Nomor 21 Tahun 2011 tentang Otoritas Jasa Keuangan");
-		//
 
 		if (ObjectItemData != null) {
 
@@ -110,17 +94,20 @@ public class OJKTerbaru extends Activity {
 								View view, int position, long id) {
 							view.setBackgroundColor(color.black);
 							if (!ObjectItemData[position].itemType.equals("regulasi")) {
+								databaseMenuRegulasi.updateIsReadOJKTerbaru(ObjectItemData[position].url);
 								Intent i = new Intent(OJKTerbaru.this, Web.class);
-								String extra = ObjectItemData[position].fileType + "," + ObjectItemData[position].url+"?mobile=1"; 
+								String extra = ObjectItemData[position].itemType + "," + ObjectItemData[position].url+"?mobile=1"; 
 								i.putExtra("FromOJKTerbaruURL", extra);
-								startActivity(i);
+								Log.d("extra", extra);
+								startActivityForResult(i, 0);
 							} else {
 								Intent i = new Intent(OJKTerbaru.this, Download.class);
 								String namaFile = ObjectItemData[position].itemName;
 								String sizeFile = ObjectItemData[position].fileSize;
 								String tipeFile = ObjectItemData[position].fileType;
 								String linkDLFile = ObjectItemData[position].downloadUrl;
-								String carry = namaFile + "," + sizeFile + "," + tipeFile + "," + linkDLFile; 
+								String url = ObjectItemData[position].url;
+								String carry = namaFile + "," + sizeFile + "," + tipeFile + "," + linkDLFile + "," + url; 
 								i.putExtra("DownloadCarryFromSearch", ""+carry);
 								startActivity(i);
 							}
@@ -156,4 +143,77 @@ public class OJKTerbaru extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		SharedPreferences settings = getSharedPreferences("bahasa", MODE_PRIVATE);
+	    String bahasanya = settings.getString("bahasanya", "ID");
+		
+		if (bahasanya.equals("ID")) {
+	    	kodeBahasa = "id";
+	    } else if (bahasanya.equals("EN")){
+	    	kodeBahasa = "en";
+	    	setTitle("Latest OJK");
+	    }
+		
+		databaseMenuRegulasi = new DatabaseMenuRegulasi(getApplicationContext());
+		databaseMenuRegulasi.getWritableDatabase();
+		ArrayList<ObjectItemListView> arrayListObj = new ArrayList<ObjectItemListView>();
+		if (kodeBahasa.equals("id")) {
+			arrayListObj = databaseMenuRegulasi.fetchDataOJKTerbaru(); 
+		} else {
+			arrayListObj = databaseMenuRegulasi.fetchDataOJKTerbaruEn();
+		}
+		
+		ObjectItemData = new ObjectItemListView[arrayListObj.size()];
+		for (int i = 0; i < arrayListObj.size(); i++) {
+			ObjectItemData[i] = arrayListObj.get(i);
+		}
+		
+		if (ObjectItemData.length == 0) {
+			TextView textViewListKosong = (TextView) findViewById(R.id.TextViewListKosong);
+			if (kodeBahasa.equals("id")) {
+				textViewListKosong.setText("Tidak ada OJK Terbaru");
+			} else {
+				textViewListKosong.setText("There is no latest OJK");
+			}
+		}
+
+		if (ObjectItemData != null) {
+
+			ArrayAdapterItem adapter = new ArrayAdapterItem(this,
+					R.layout.listviewadapternocount, ObjectItemData);
+			ListView listViewItems = (ListView) findViewById(R.id.listViewReg);
+			// listViewItems.setOnItemClickListener(new
+			// OnItemClickListenerListViewItem());
+			listViewItems
+					.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent,
+								View view, int position, long id) {
+							view.setBackgroundColor(color.black);
+							if (!ObjectItemData[position].itemType.equals("regulasi")) {
+								databaseMenuRegulasi.updateIsReadOJKTerbaru(ObjectItemData[position].url);
+								Intent i = new Intent(OJKTerbaru.this, Web.class);
+								String extra = ObjectItemData[position].itemType + "," + ObjectItemData[position].url+"?mobile=1"; 
+								i.putExtra("FromOJKTerbaruURL", extra);
+								Log.d("extra", extra);
+								startActivityForResult(i, 0);
+							} else {
+								Intent i = new Intent(OJKTerbaru.this, Download.class);
+								String namaFile = ObjectItemData[position].itemName;
+								String sizeFile = ObjectItemData[position].fileSize;
+								String tipeFile = ObjectItemData[position].fileType;
+								String linkDLFile = ObjectItemData[position].downloadUrl;
+								String url = ObjectItemData[position].url;
+								String carry = namaFile + "," + sizeFile + "," + tipeFile + "," + linkDLFile + "," + url;  
+								i.putExtra("DownloadCarryFromSearch", ""+carry);
+								startActivity(i);
+							}
+						}
+					});
+			listViewItems.setAdapter(adapter);
+		}
+	}
 }
+

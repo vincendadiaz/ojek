@@ -29,50 +29,50 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		db.execSQL(table);
 		table = "CREATE TABLE `GridRegulasiEn` (`id`	INTEGER NOT NULL,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `idparent` INTEGER, `isread` INTEGER, `createdon` TEXT, `downloadedon` TEXT, `url` TEXT);";
 		db.execSQL(table);
-		table = "CREATE TABLE `OjkTerbaru` (`id`	INTEGER NOT NULL,`itemtype` TEXT ,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `url` TEXT, `created` TEXT);";
+		table = "CREATE TABLE `OjkTerbaru` (`id`	INTEGER NOT NULL,`itemtype` TEXT ,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `url` TEXT, `created` TEXT, `sortdate` TEXT, `isread` INTEGER);";
 		db.execSQL(table);
-		table = "CREATE TABLE `OjkTerbaruEn` (`id`	INTEGER NOT NULL,`itemtype` TEXT ,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `url` TEXT, `created` TEXT);";
+		table = "CREATE TABLE `OjkTerbaruEn` (`id`	INTEGER NOT NULL,`itemtype` TEXT ,`title`	TEXT,`downloadurl`	TEXT,`filesize`	TEXT,`filetype`	TEXT,`parenturl`	TEXT, `url` TEXT, `created` TEXT, `sortdate` TEXT, `isread` INTEGER);";
 		db.execSQL(table);
 	}
 	
 	//drop drop table
 	public void dropMenuRegulasi(){
-		String drop = "DELETE FROM `MenuRegulasi`";
+		String drop = "DROP TABLE `MenuRegulasi`";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
 		cursor.moveToFirst();
 	}
 
 	public void dropMenuRegulasiEn() {
-		String drop = "DELETE FROM `MenuRegulasiEn`";
+		String drop = "DROP TABLE `MenuRegulasiEn`";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
 		cursor.moveToFirst();
 	}
 
 	public void dropGridRegulasi() {
-		String drop = "DELETE FROM `GridRegulasi`";
+		String drop = "DROP TABLE `GridRegulasi`";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
 		cursor.moveToFirst();
 	}
 
 	public void dropGridRegulasiEn() {
-		String drop = "DELETE FROM `GridRegulasiEn`";
+		String drop = "DROP TABLE `GridRegulasiEn`";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
 		cursor.moveToFirst();
 	}
 
 	public void dropOjkTerbaru() {
-		String drop = "DELETE FROM `OjkTerbaru`";
+		String drop = "DROP TABLE `OjkTerbaru`";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
 		cursor.moveToFirst();
 	}
 
 	public void dropOjkTerbaruEn() {
-		String drop = "DELETE FROM `OjkTerbaruEn`";
+		String drop = "DROP TABLE `OjkTerbaruEn`";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(drop, null);
 		cursor.moveToFirst();
@@ -86,7 +86,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 	}
 	
 	// Query2 OJKTerbaru
-	public void insertDataOJKTerbaru(int id,String itemtype, String title, String downloadurl, String filesize, String filetype, String parenturl, String url, String created) {
+	public void insertDataOJKTerbaru(int id,String itemtype, String title, String downloadurl, String filesize, String filetype, String parenturl, String url, String created, String sortdate, int isread) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("id", id);
@@ -98,10 +98,12 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		values.put("parenturl", parenturl);
 		values.put("url", url);
 		values.put("created", created);
+		values.put("sortdate", sortdate);
+		values.put("isread", isread);
 		sqLiteDatabase.insert("OjkTerbaru", null, values);
 	}
 	
-	public void insertDataOJKTerbaruEn(int id,String itemtype, String title, String downloadurl, String filesize, String filetype, String parenturl, String url, String created) {
+	public void insertDataOJKTerbaruEn(int id,String itemtype, String title, String downloadurl, String filesize, String filetype, String parenturl, String url, String created, String sortdate, int isread) {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("id", id);
@@ -113,18 +115,20 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		values.put("parenturl", parenturl);
 		values.put("url", url);
 		values.put("created", created);
+		values.put("sortdate", sortdate);
+		values.put("isread", isread);
 		sqLiteDatabase.insert("OjkTerbaruEn", null, values);
 	}
 	
 	public ArrayList<ObjectItemListView> fetchDataOJKTerbaru() {	
 		ArrayList<ObjectItemListView> ListOfObj = new ArrayList<ObjectItemListView>();
 		
-		String fetchdata = "select * from OjkTerbaru order by created";
+		String fetchdata = "select * from OjkTerbaru order by sortdate desc";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemListView ObjData = new ObjectItemListView(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8));
+				ObjectItemListView ObjData = new ObjectItemListView(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), cursor.getInt(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
@@ -139,7 +143,7 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		Cursor cursor = sqLiteDatabase.rawQuery(fetchdata, null);
 		if (cursor.moveToFirst()) {
 			do {
-				ObjectItemListView ObjData = new ObjectItemListView(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8));
+				ObjectItemListView ObjData = new ObjectItemListView(cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8), cursor.getString(9), cursor.getInt(10));
 				ListOfObj.add(ObjData);
 			} while (cursor.moveToNext());
 		}
@@ -172,6 +176,20 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		values.put("created", newCreated);
+		sqLiteDatabase.update("OjkTerbaru", values, "url='" + url + "'", null);
+	}
+	
+	public void updateSortdateOJKTerbaruEn(String url, String newSortdate) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("sortdate", newSortdate);
+		sqLiteDatabase.update("OjkTerbaruEn", values, "url='" + url + "'", null);
+	}
+	
+	public void updateSortdateOJKTerbaru(String url, String newSortdate) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("sortdate", newSortdate);
 		sqLiteDatabase.update("OjkTerbaru", values, "url='" + url + "'", null);
 	}
 	
@@ -249,20 +267,80 @@ public class DatabaseMenuRegulasi extends SQLiteOpenHelper {
 		sqLiteDatabase.update("GridRegulasi", values, "url='" + url + "'", null);
 	}
 	
-	public int getCountAllOJKTerbaruEn() {
-		String queryCount = "select count(*) from OJKTerbaruEn";
+	public int getCountAllOJKTerbaruUnreadEn() {
+		String queryCount = "select count(*) from OJKTerbaruEn where isread = '0'";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
 		cursor.moveToFirst();
 		return cursor.getInt(0);
 	}
 	
-	public int getCountAllOJKTerbaru() {
-		String queryCount = "select count(*) from OJKTerbaru";
+	public int getCountAllOJKTerbaruUnread() {
+		String queryCount = "select count(*) from OJKTerbaru where isread = '0'";
 		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
 		cursor.moveToFirst();
 		return cursor.getInt(0);
+	}
+	
+	public void updateUnReadOJKTerbaruEn(String url) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("isread", 0);
+		sqLiteDatabase.update("OJKTerbaruEn", values, "url='" + url + "'", null);
+	}
+	
+	public void updateUnReadOJKTerbaru(String url) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("isread", 0);
+		sqLiteDatabase.update("OJKTerbaru", values, "url='" + url + "'", null);
+	}
+	
+	public void updateIsReadOJKTerbaruEn(String url) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("isread", 1);
+		sqLiteDatabase.update("OJKTerbaruEn", values, "url='" + url + "'", null);
+	}
+	
+	public void updateIsReadOJKTerbaru(String url) {
+		SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		values.put("isread", 1);
+		sqLiteDatabase.update("OJKTerbaru", values, "url='" + url + "'", null);
+	}
+	
+	public boolean cekDiOJKTerbaru(String url) {
+		String queryCount = "select count(*) from OjkTerbaru where url = '" + url + "'";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
+		cursor.moveToFirst();
+		return cursor.getInt(0) == 1 ? true : false;
+	}
+	
+	public boolean cekDiOJKTerbaruEn(String url) {
+		String queryCount = "select count(*) from OjkTerbaru where url = '" + url + "'";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
+		cursor.moveToFirst();
+		return cursor.getInt(0) == 1 ? true : false;
+	}
+	
+	public boolean isReadOJKTerbaru(String url) {
+		String queryCount = "select isread from OjkTerbaru where url = '" + url + "'";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
+		cursor.moveToFirst();
+		return cursor.getInt(0) == 1 ? true : false;
+	}
+	
+	public boolean isReadOJKTerbaruEn(String url) {
+		String queryCount = "select isread from OjkTerbaru where url = '" + url + "'";
+		SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+		Cursor cursor = sqLiteDatabase.rawQuery(queryCount, null);
+		cursor.moveToFirst();
+		return cursor.getInt(0) == 1 ? true : false;
 	}
 	
 	//Stop OJK Terbaru

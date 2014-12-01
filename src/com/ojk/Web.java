@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebChromeClient;
@@ -78,6 +79,7 @@ public class Web extends Activity {
 			String extra = getIntent().getStringExtra("FromOJKTerbaruURL");
 			String[] splitExtra = extra.split(",");
 			String title = "Data dan Statistik";
+			Log.d("tipe", splitExtra[0]);
 			if (splitExtra[0].contains("berita")) {
 				title = "Berita dan Kegiatan";
 			}

@@ -140,7 +140,8 @@ public class Search extends Activity {
 
 		@Override
 		protected Boolean doInBackground(String... arg0) {
-			String urlMenu = "http://portalojk.dev.altrovis.com/_controls/OJKService.asmx/SearchRegulasi?kodebahasa=" + kodeBahasa + "&keyword=" + extra;
+			Log.d("menuPathString", Global.menuPathString.substring(0, Global.menuPathString.length()));
+			String urlMenu = "http://portalojk.dev.altrovis.com/_controls/OJKService.asmx/SearchRegulasiWithinSubsite?kodebahasa=" + kodeBahasa + "&keyword=" + extra + "&menuPathString=" + Global.menuPathString.substring(0, Global.menuPathString.length()-7);
 			if (JSONtoArrayList(urlMenu)) {
 				return true;
 			}
