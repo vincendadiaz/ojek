@@ -16,6 +16,7 @@
             android:layout_width="160dp"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
             android:layout_marginBottom="80dp"
             android:scaleType="fitCenter" >
 
@@ -176,32 +177,38 @@
             </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewVersion"
+        <RelativeLayout
+            android:id="@+id/relLayoutVersionSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linearLayoutShadow"
-            android:layout_centerHorizontal="true"
-            android:text="OJK App Ver 0.1"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp">
 
-        <RelativeLayout
-            android:id="@+id/relLayoutSetting"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/linearLayoutShadow"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="-6dp"
-            android:background="#c70100" >
+            <TextView
+                android:id="@+id/textViewVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OJK App Ver 0.1"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF" />
 
-            <ImageButton
-                android:id="@+id/imageButtonSetting"
+            <RelativeLayout
+                android:id="@+id/relLayoutSetting"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:scaleType="center"
-                android:background="@drawable/setting" />
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:background="#c70100" >
+
+                <ImageButton
+                    android:id="@+id/imageButtonSetting"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/setting"
+                    android:scaleType="center" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 

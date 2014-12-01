@@ -123,7 +123,7 @@ public class MainActivity extends Activity {
 		PendingIntent pendingIntent = PendingIntent.getService(context, 0,
 				intent, 0);
 		alarmManager.setRepeating(AlarmManager.RTC, whenFirstNotification,
-				1000 * 30, pendingIntent);
+				1000 * 60, pendingIntent);
 		//
 
 		RelativeLayout menu1 = (RelativeLayout) findViewById(R.id.linearLayoutInside1);
@@ -168,6 +168,7 @@ public class MainActivity extends Activity {
 	}
 
 	int mb = -1;
+	int mt = -1;
 
 	// detect orientation change
 	@Override
@@ -180,6 +181,7 @@ public class MainActivity extends Activity {
 
 		if (mb == -1) {
 			mb = lp.bottomMargin;
+			mt = lp.topMargin;
 		}
 		// Checks the orientation of the screen
 		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -195,7 +197,7 @@ public class MainActivity extends Activity {
 			LayoutParams params = new LayoutParams((int) getResources()
 					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
 					.getDimension(R.dimen.logoDepanHeight));
-			params.setMargins(0, 0, 0, mb);
+			params.setMargins(0, mt, 0, mb);
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
 			relLayoutLogo.setLayoutParams(params);
