@@ -53,6 +53,54 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		getActionBar().hide();
 
+		RelativeLayout relLayoutLogo = (RelativeLayout) findViewById(R.id.relayoutlogo);
+		RelativeLayout relLayoutBawah = (RelativeLayout) findViewById(R.id.relLayoutVersionSetting);
+		View view = findViewById(R.id.relayoutlogo);
+		LayoutParams lp = (LayoutParams) view.getLayoutParams();
+		
+		View view2 = findViewById(R.id.relLayoutVersionSetting);
+		LayoutParams lp2 = (LayoutParams) view2.getLayoutParams();
+
+		if (mb == -1) {
+			mb = lp.bottomMargin;
+			mt = lp.topMargin;
+			mb2 = lp2.bottomMargin;
+		}
+		
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+			LayoutParams params = new LayoutParams((int) getResources()
+					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
+					.getDimension(R.dimen.logoDepanHeight));
+			params.setMargins(0, 40, 0, 20);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+			relLayoutLogo.setLayoutParams(params);
+			
+			LayoutParams params2 = new LayoutParams(relLayoutBawah.getLayoutParams());
+			params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			params2.setMargins(0, 0, 0, 40);
+			params2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			
+			//relLayoutBawah.setLayoutParams(params2);
+		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			LayoutParams params = new LayoutParams((int) getResources()
+					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
+					.getDimension(R.dimen.logoDepanHeight));
+			params.setMargins(0, mt, 0, mb);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+			relLayoutLogo.setLayoutParams(params);
+			
+			LayoutParams params2 = new LayoutParams(relLayoutBawah.getLayoutParams());
+			params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			params2.setMargins(0, 0, 0, mb2);
+			params2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			
+			//relLayoutBawah.setLayoutParams(params2);
+
+		}
+		
 		SharedPreferences settings = getSharedPreferences("bahasa",
 				MODE_PRIVATE);
 		String bahasanya = settings.getString("bahasanya", "ID");
@@ -587,6 +635,54 @@ public class MainActivity extends Activity {
 				textViewCountOJKTerbaru.setText(""+databaseMenuRegulasi
 						.getCountAllOJKTerbaruUnread());
 			}
+		}
+		
+		RelativeLayout relLayoutLogo = (RelativeLayout) findViewById(R.id.relayoutlogo);
+		RelativeLayout relLayoutBawah = (RelativeLayout) findViewById(R.id.relLayoutVersionSetting);
+		View view = findViewById(R.id.relayoutlogo);
+		LayoutParams lp = (LayoutParams) view.getLayoutParams();
+		
+		View view2 = findViewById(R.id.relLayoutVersionSetting);
+		LayoutParams lp2 = (LayoutParams) view2.getLayoutParams();
+
+		if (mb == -1) {
+			mb = lp.bottomMargin;
+			mt = lp.topMargin;
+			mb2 = lp2.bottomMargin;
+		}
+		// Checks the orientation of the screen
+		if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+			LayoutParams params = new LayoutParams((int) getResources()
+					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
+					.getDimension(R.dimen.logoDepanHeight));
+			params.setMargins(0, 40, 0, 20);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+			relLayoutLogo.setLayoutParams(params);
+			
+			LayoutParams params2 = new LayoutParams(relLayoutBawah.getLayoutParams());
+			params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			params2.setMargins(0, 0, 0, 40);
+			params2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			
+			//relLayoutBawah.setLayoutParams(params2);
+		} else if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			LayoutParams params = new LayoutParams((int) getResources()
+					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
+					.getDimension(R.dimen.logoDepanHeight));
+			params.setMargins(0, mt, 0, mb);
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+
+			relLayoutLogo.setLayoutParams(params);
+			
+			LayoutParams params2 = new LayoutParams(relLayoutBawah.getLayoutParams());
+			params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			params2.setMargins(0, 0, 0, mb2);
+			params2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			
+			//relLayoutBawah.setLayoutParams(params2);
+
 		}
 	}
 }
