@@ -179,10 +179,9 @@
 
         <RelativeLayout
             android:id="@+id/relLayoutVersionSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp">
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true">
 
             <TextView
                 android:id="@+id/textViewVersion"
@@ -199,7 +198,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="6dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
                 android:background="#c70100" >
 
                 <ImageButton

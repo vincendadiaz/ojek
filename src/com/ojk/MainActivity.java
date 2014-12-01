@@ -169,19 +169,24 @@ public class MainActivity extends Activity {
 
 	int mb = -1;
 	int mt = -1;
+	int mb2 = -1;
 
 	// detect orientation change
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		RelativeLayout relLayoutLogo = (RelativeLayout) findViewById(R.id.relayoutlogo);
-
+		RelativeLayout relLayoutBawah = (RelativeLayout) findViewById(R.id.relLayoutVersionSetting);
 		View view = findViewById(R.id.relayoutlogo);
 		LayoutParams lp = (LayoutParams) view.getLayoutParams();
+		
+		View view2 = findViewById(R.id.relLayoutVersionSetting);
+		LayoutParams lp2 = (LayoutParams) view2.getLayoutParams();
 
 		if (mb == -1) {
 			mb = lp.bottomMargin;
 			mt = lp.topMargin;
+			mb2 = lp2.bottomMargin;
 		}
 		// Checks the orientation of the screen
 		if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -189,10 +194,17 @@ public class MainActivity extends Activity {
 			LayoutParams params = new LayoutParams((int) getResources()
 					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
 					.getDimension(R.dimen.logoDepanHeight));
-			params.setMargins(0, 0, 0, 0);
+			params.setMargins(0, 40, 0, 20);
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
 			relLayoutLogo.setLayoutParams(params);
+			
+			LayoutParams params2 = new LayoutParams(relLayoutBawah.getLayoutParams());
+			params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			params2.setMargins(0, 0, 0, 40);
+			params2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			
+			//relLayoutBawah.setLayoutParams(params2);
 		} else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
 			LayoutParams params = new LayoutParams((int) getResources()
 					.getDimension(R.dimen.logoDepanWidth), (int) getResources()
@@ -201,6 +213,13 @@ public class MainActivity extends Activity {
 			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
 
 			relLayoutLogo.setLayoutParams(params);
+			
+			LayoutParams params2 = new LayoutParams(relLayoutBawah.getLayoutParams());
+			params2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			params2.setMargins(0, 0, 0, mb2);
+			params2.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			
+			//relLayoutBawah.setLayoutParams(params2);
 
 		}
 	}
