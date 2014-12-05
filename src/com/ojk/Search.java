@@ -1,5 +1,7 @@
 package com.ojk;
 
+import java.net.URLEncoder;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -141,7 +143,10 @@ public class Search extends Activity {
 		@Override
 		protected Boolean doInBackground(String... arg0) {
 			Log.d("menuPathString", Global.menuPathString.substring(0, Global.menuPathString.length()));
-			String urlMenu = "http://portalojk.dev.altrovis.com/_controls/OJKService.asmx/SearchRegulasiWithinSubsite?kodebahasa=" + kodeBahasa + "&keyword=" + extra + "&menuPathString=" + Global.menuPathString.substring(0, Global.menuPathString.length()-7);
+			String urlMenu = "";
+			try {
+				urlMenu = "http://portalojk.dev.altrovis.com/_controls/OJKService.asmx/SearchRegulasiWithinSubsite?kodebahasa=" + kodeBahasa + "&keyword=" + URLEncoder.encode(extra, "UTF-8") + "&menuPathString=" + Global.menuPathString.substring(0, Global.menuPathString.length()-7);
+			} catch (Exception e) {}
 			if (JSONtoArrayList(urlMenu)) {
 				return true;
 			}

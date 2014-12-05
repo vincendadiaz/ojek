@@ -143,7 +143,10 @@ public class Download extends Activity {
 			tipeFile = splitExtra[2];
 
 			downloadLinkUrl = splitExtra[3];
-			urlDariOJKTerbaru = splitExtra[4];
+			
+			try{
+				urlDariOJKTerbaru = splitExtra[4];
+			} catch (Exception e) {}
 			
 			String idDanIdParent = "";
 			if (bahasanya.equals("ID")) {

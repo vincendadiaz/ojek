@@ -115,6 +115,9 @@ public class OJKTerbaru extends Activity {
 					});
 			listViewItems.setAdapter(adapter);
 		}
+		
+		ArrayList isiGridDatabaseMenuRegulasi = databaseMenuRegulasi.fetchDataOjkDebug();
+		Log.d("IsiOJKTerbaru", isiGridDatabaseMenuRegulasi.toString());
 	}
 
 	@Override

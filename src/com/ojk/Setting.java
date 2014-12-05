@@ -167,7 +167,7 @@ public class Setting extends Activity {
 						.getLaunchIntentForPackage(
 								getBaseContext().getPackageName());
 				i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(i);
+				startActivityForResult(i, 0);
 			}
 		});
 

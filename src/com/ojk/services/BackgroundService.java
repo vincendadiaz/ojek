@@ -96,6 +96,10 @@ public class BackgroundService extends IntentService {
 					getApplicationContext());
 			databaseMenuRegulasi.getWritableDatabase();
 			
+			if (databaseMenuRegulasi.cekKosongOJKTerbaru() == 0) {
+				pertamaxx = "yes";
+			}
+			
 			if (pertamaxx.equals("no")) {
 				Log.d("errorBG", "1");
 				if(OpenJSON(urlMenu)) {
